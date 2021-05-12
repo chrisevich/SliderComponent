@@ -1,0 +1,21 @@
+﻿
+.slider {
+    color: white;
+    background-color: blue;
+    overflow-x: hidden;
+}
+
+    .slider ul {
+        display: flex;
+        overflow-x: visible;
+        user-select: none;
+        padding: 0;
+    }
+
+        .slider ul li {
+            background: skyblue;
+            min-height: 250px;
+            min-width: 400px;
+        }
+
+

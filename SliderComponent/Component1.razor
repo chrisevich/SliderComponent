@@ -1,0 +1,73 @@
+﻿
+@inject IJSRuntime JS
+@using Microsoft.JSInterop;
+
+@page "/"
+<div @ref="sliderElement" class="slider">
+    <ul @ref="scrollElement" style="transform:translate(@(x.ToString()+"px")); transition-timing-function: ease-out; transition:2s">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li>
+        <li>10</li>
+        <li>11</li>
+        <li>12</li>
+        <li>13</li>
+        <li>14</li>
+        <li>15</li>
+        <li>16</li>
+        <li>17</li>
+        <li>18</li>
+        <li>19</li>
+        <li>20</li>
+
+    </ul>
+</div>
+
+<button @onclick="scrollRight">right</button>
+<button @onclick="scrollLeft">left</button>
+
+
+
+@code {
+
+    [Parameter] public int Duration { get; set; } = 3000;
+    ElementReference sliderElement;
+    ElementReference scrollElement;
+    double x;
+    int sliderWidth;
+    int scrollWidth;
+    ExampleJsInterop module;
+
+
+    private async Task scrollLeft()
+    {
+        sliderWidth = await module.GetSliderWidth(sliderElement);
+        x += Math.Clamp(Math.Abs(x), 0, sliderWidth);
+    }
+
+    private async Task scrollRight()
+    {
+        scrollWidth = await module.GetScrollWidth(scrollElement);
+        sliderWidth = await module.GetSliderWidth(sliderElement);
+
+        x -= Math.Clamp(scrollWidth - (Math.Abs(x) + sliderWidth), 0, sliderWidth);
+    }
+
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = new ExampleJsInterop(JS);
+        }
+    }
+
+}
+
